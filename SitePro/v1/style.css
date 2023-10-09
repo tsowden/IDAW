@@ -1,7 +1,6 @@
 .container {
     display: flex;
     padding: 10px;
-    margin-bottom: 10px;
 }
 
 .menu {
@@ -12,10 +11,18 @@
 
 .container-title {
     display: flex;
-    padding: 20px;
-    margin-bottom: 10px;
-    text-align: center;
+    padding: 10px;
+    margin-left: 40px;
+    flex-direction: column;
+
 }
+
+.contenu {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+
 
 .bleu {
     background-color: rgb(157, 204, 228);
