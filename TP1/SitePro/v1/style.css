@@ -9,6 +9,11 @@
 
 }
 
+#currentpage {
+    color: rgb(189, 39, 39);
+    font-weight: bold;
+}
+
 .container-title {
     display: flex;
     padding: 10px;
