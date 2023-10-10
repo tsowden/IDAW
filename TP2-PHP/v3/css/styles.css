@@ -110,7 +110,8 @@ header {
 }
 
 footer {
-  margin-left: 2em;
+  font-style: oblique;
+  margin-left: 1em;
 }
 
 hr {
@@ -139,6 +140,14 @@ h1,
   font-weight: 700;
   line-height: 1.2;
   color: #343a40;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-italic {
+  font-style: italic;
 }
 
 #currentpage {
