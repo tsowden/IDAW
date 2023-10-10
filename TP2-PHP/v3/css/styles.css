@@ -80,6 +80,11 @@
   --bs-highlight-bg: #fff3cd;
 }
 
+.langue {
+  font-style: oblique;
+  color: rgb(255, 188, 246);
+}
+
 *,
 *::before,
 *::after {
@@ -113,6 +118,8 @@ footer {
   font-style: oblique;
   margin-left: 1em;
 }
+
+
 
 hr {
   margin: 1rem 0;
