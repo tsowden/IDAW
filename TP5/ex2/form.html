@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <title>tabletest</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+
+    <style>
+        body {
+            margin-top: 5em;
+        }
+
+        .table {
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <!-- <th scope="col">ID</th> -->
+                <th scope="col">Nom</th>
+                <th scope="col">Email</th>
+
+            </tr>
+        </thead>
+        <tbody id="studentsTableBody">
+        </tbody>
+    </table>
+    <script>
+        $(document).ready(function () {
+            $('#table').DataTable();
+        });
+    </script>
+
+    <form id="addStudentForm">
+
+        <div class="form-group row">
+            <label for="inputNom" class="col-sm-2 col-form-label">Nom*</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputNom" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputMail" class="col-sm-2 col-form-label">Email*</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="inputMail" required>
+            </div>
+        </div>
+
+
+        <!-- Ajoutez ici les autres champs du formulaire (prénom, date de naissance, etc.) -->
+        <div class="form-group row">
+            <span class="col-sm-2"></span>
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-primary form-control" id="submitButton"
+                    style="display: block;">Submit</button>
+                <!--type="submit" : Lorsque ce bouton est cliqué à l'intérieur d'un formulaire, le formulaire est soumis au serveur pour traitement. Cela signifie que les données du formulaire sont envoyées au serveur pour être traitées par un script ou un programme. -->
+                <!--type="button" : Cela signifie que le bouton est un bouton ordinaire. Il n'a pas de comportement par défaut lorsqu'il est cliqué. Vous pouvez définir un comportement personnalisé en utilisant JavaScript-->
+            </div>
+        </div>
+    </form>
+    <button type="button" id="saveButton" class="btn btn-primary " style="display: none;">Enregistrer</button>
+    <script>
+        // approche de jQuery avec $(document).ready(function() {...}) est utilisée pour gérer l'événement de clic du bouton
+        $(document).ready(function () {
+            $("#submitButton").click(function (event) {
+                // Empêche l'envoi du formulaire au serveur
+                event.preventDefault();
+
+                // Récupère la valeur des champs
+                let nom = $("#inputNom").val();
+                let email = $("#inputMail").val();
+
+                // Vérifie si les champ nom et mail sont remplis avant d'ajouter une nouvelle ligne au tableau
+                if (nom.trim() !== "" && email.trim() !== "") {
+                    // Ajoute une nouvelle ligne au tableau avec le nom et le prénom
+                    $("#studentsTableBody").append(`<tr>
+        <td>${nom}</td>
+        <td>${email}</td>
+        <td><button class="btn btn-info btn-sm editBtn">Éditer</button></td>
+        <td><button class="btn btn-danger btn-sm deleteBtn">Supprimer</button></td>
+    </tr>`);
+                    // Réinitialise le champ nom et le champs prénom après l'ajout
+                    $("#inputNom").val("");
+                    $("#inputMail").val("");
+                } else {
+                    // Affiche un message d'erreur si le champ nom est vide
+                    alert("Le champ nom et le mail sont obligatoires.");
+                }
+            });
+            // Gestionnaire d'événement pour le bouton "Éditer"
+            $("#studentsTableBody").on("click", ".editBtn", function () {
+                // Récupère la ligne du tableau correspondant au bouton "Éditer" cliqué
+                let row = $(this).closest("tr");
+
+                // Récupère les valeurs des cellules de la ligne du tableau
+                let nom = row.find("td:eq(0)").text();
+                let email = row.find("td:eq(1)").text();
+
+                // Pré-remplit le formulaire avec les données de la ligne du tableau
+                $("#inputNom").val(nom);
+                $("#inputMail").val(email);
+
+                // Affiche le bouton "Enregistrer" pour appliquer les modifications
+                $("#saveButton").show();
+                $("#submitButton").hide();
+
+                // Gestionnaire d'événement pour le bouton "Enregistrer"
+                $("#saveButton").one("click", function (event) {
+                    event.preventDefault();
+
+                    // Récupère les nouvelles valeurs du formulaire
+                    let newNom = $("#inputNom").val();
+                    let newMail = $("#inputMail").val();
+
+                    // Modifie les cellules de la ligne du tableau avec les nouvelles valeurs
+                    row.find("td:eq(0)").text(newNom);
+                    row.find("td:eq(1)").text(newMail);
+
+                    // Réinitialise le formulaire
+                    $("#inputNom").val("");
+                    $("#inputMail").val("");
+
+                    // Cache le bouton "Enregistrer" après l'édition
+                    $("#saveButton").hide();
+                    $("#submitButton").show();
+                });
+            });
+
+            $("#studentsTableBody").on("click", ".deleteBtn", function () {
+                // Logique pour la suppression d'une ligne du tableau
+                $(this).closest("tr").remove();
+            });
+        });
+    </script>
+</body>
+
+</html>
